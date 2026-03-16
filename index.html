@@ -1,835 +1,652 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Miguel Ibañez — Tècnic IT</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miguel Ibañez | Portfolio</title>
+  <meta name="description" content="Portfolio personal de Miguel Ibañez Hernando, estudiant d'ASIX amb projectes de sistemes, xarxes, Docker i desenvolupament web." />
   <style>
-    :root {
-      --navy: #0D1B2A;
-      --navy2: #112236;
-      --cyan: #00B4D8;
-      --cyan2: #90E0EF;
-      --white: #E8F4F8;
-      --gray: #8899AA;
-      --card: #0f2236;
-      --border: #1a3a55;
+    :root{
+      --bg:#0b1120;
+      --bg-soft:#121a2d;
+      --card:#172036;
+      --line:#27324d;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --accent:#38bdf8;
+      --accent-2:#22c55e;
+      --white:#ffffff;
+      --shadow:0 10px 30px rgba(0,0,0,.25);
+      --radius:18px;
+      --max:1150px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--navy);
-      color: var(--white);
-      font-family: 'Syne', sans-serif;
-      overflow-x: hidden;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      background:linear-gradient(180deg,#0b1120 0%, #0f172a 100%);
+      color:var(--text);
+      line-height:1.6;
     }
 
-    /* ── CURSOR ── */
-    body { cursor: none; }
-    #cursor {
-      width: 12px; height: 12px;
-      background: var(--cyan);
-      border-radius: 50%;
-      position: fixed; top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.1s;
-      mix-blend-mode: screen;
-    }
-    #cursor-ring {
-      width: 36px; height: 36px;
-      border: 1px solid var(--cyan);
-      border-radius: 50%;
-      position: fixed; top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9998;
-      transition: all 0.15s ease;
-      opacity: 0.5;
+    a{
+      color:var(--accent);
+      text-decoration:none;
     }
 
-    /* ── GRID BG ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 48px 48px;
-      opacity: 0.25;
-      pointer-events: none;
-      z-index: 0;
+    a:hover{
+      opacity:.9;
     }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.2rem 4rem;
-      background: rgba(13,27,42,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
-      color: var(--cyan);
-      letter-spacing: 0.1em;
-    }
-    .nav-logo span { color: var(--white); }
-    nav ul {
-      display: flex; gap: 2.5rem;
-      list-style: none;
-    }
-    nav ul a {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--gray);
-      text-decoration: none;
-      letter-spacing: 0.1em;
-      transition: color 0.2s;
-    }
-    nav ul a:hover { color: var(--cyan); }
-
-    /* ── HERO ── */
-    #hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 6rem 4rem 4rem;
-      z-index: 1;
-    }
-    .hero-content { max-width: 800px; }
-    .hero-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--cyan);
-      letter-spacing: 0.2em;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.2s forwards;
-    }
-    .hero-tag::before { content: '> '; }
-    h1 {
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 800;
-      line-height: 1;
-      margin-bottom: 0.3rem;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.4s forwards;
-    }
-    h1 span { color: var(--cyan); }
-    .hero-subtitle {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
-      color: var(--gray);
-      margin-bottom: 2rem;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.6s forwards;
-    }
-    .hero-desc {
-      font-size: 1.05rem;
-      color: var(--cyan2);
-      line-height: 1.7;
-      max-width: 560px;
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.8s forwards;
-    }
-    .hero-btns {
-      display: flex; gap: 1rem; flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.6s 1s forwards;
-    }
-    .btn {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
-      padding: 0.75rem 1.8rem;
-      border-radius: 2px;
-      text-decoration: none;
-      transition: all 0.2s;
-      cursor: none;
-    }
-    .btn-primary {
-      background: var(--cyan);
-      color: var(--navy);
-      font-weight: 700;
-    }
-    .btn-primary:hover { background: var(--cyan2); transform: translateY(-2px); }
-    .btn-outline {
-      border: 1px solid var(--cyan);
-      color: var(--cyan);
-    }
-    .btn-outline:hover { background: rgba(0,180,216,0.1); transform: translateY(-2px); }
-
-    /* ── SCROLL INDICATOR ── */
-    .scroll-line {
-      position: absolute;
-      bottom: 2rem; left: 4rem;
-      display: flex; align-items: center; gap: 1rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--gray);
-      letter-spacing: 0.15em;
-      animation: fadeUp 0.6s 1.2s forwards;
-      opacity: 0;
-    }
-    .scroll-line::after {
-      content: '';
-      display: block;
-      width: 60px; height: 1px;
-      background: var(--cyan);
-      animation: expand 1.5s 1.5s ease infinite;
+    .container{
+      width:min(100% - 2rem,var(--max));
+      margin:0 auto;
     }
 
-    /* ── SECTIONS ── */
-    section {
-      position: relative;
-      z-index: 1;
-      padding: 6rem 4rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .section-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--cyan);
-      letter-spacing: 0.2em;
-      margin-bottom: 0.5rem;
-    }
-    .section-tag::before { content: '// '; }
-    h2 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin-bottom: 3rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1rem;
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(12px);
+      background:rgba(11,17,32,.75);
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
 
-    /* ── SKILLS ── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-    }
-    .skill-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1.5rem;
-      transition: all 0.25s;
-      position: relative;
-      overflow: hidden;
-    }
-    .skill-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 100%;
-      background: var(--cyan);
-      transform: scaleY(0);
-      transition: transform 0.25s;
-      transform-origin: bottom;
-    }
-    .skill-card:hover { border-color: var(--cyan); transform: translateY(-4px); }
-    .skill-card:hover::before { transform: scaleY(1); }
-    .skill-icon {
-      font-size: 1.5rem;
-      margin-bottom: 0.8rem;
-    }
-    .skill-card h3 {
-      font-size: 0.9rem;
-      color: var(--cyan);
-      margin-bottom: 0.8rem;
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 0.05em;
-    }
-    .skill-tags {
-      display: flex; flex-wrap: wrap; gap: 0.4rem;
-    }
-    .tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      padding: 0.2rem 0.6rem;
-      background: rgba(0,180,216,0.1);
-      border: 1px solid rgba(0,180,216,0.3);
-      border-radius: 2px;
-      color: var(--cyan2);
+    .nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:1rem 0;
+      gap:1rem;
     }
 
-    /* ── EXPERIENCIA ── */
-    .timeline { position: relative; padding-left: 2rem; }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 1px;
-      background: var(--border);
-    }
-    .timeline-item {
-      position: relative;
-      margin-bottom: 2.5rem;
-      padding-left: 1.5rem;
-    }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -2rem; top: 0.4rem;
-      width: 10px; height: 10px;
-      background: var(--navy);
-      border: 2px solid var(--cyan);
-      border-radius: 50%;
-    }
-    .timeline-date {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--cyan);
-      margin-bottom: 0.3rem;
-      letter-spacing: 0.1em;
-    }
-    .timeline-item h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 0.2rem;
-    }
-    .timeline-company {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--gray);
-      margin-bottom: 0.6rem;
-    }
-    .timeline-desc {
-      font-size: 0.9rem;
-      color: var(--cyan2);
-      line-height: 1.6;
+    .brand{
+      font-weight:800;
+      color:var(--white);
+      letter-spacing:.3px;
     }
 
-    /* ── IPOP ── */
-    #ipop {
-      background: var(--navy2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      max-width: 100%;
-      padding: 6rem 4rem;
-    }
-    #ipop > .inner { max-width: 1100px; margin: 0 auto; }
-    .ipop-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1rem;
-    }
-    .ipop-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 2rem;
-      transition: all 0.25s;
-    }
-    .ipop-card:hover {
-      border-color: var(--cyan);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(0,180,216,0.1);
-    }
-    .ipop-card h3 {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--cyan);
-      letter-spacing: 0.1em;
-      margin-bottom: 1rem;
-    }
-    .ipop-card p {
-      font-size: 0.9rem;
-      color: var(--cyan2);
-      line-height: 1.6;
-    }
-    .ipop-link {
-      display: inline-block;
-      margin-top: 2rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--cyan);
-      text-decoration: none;
-      border-bottom: 1px solid var(--cyan);
-      padding-bottom: 2px;
-      letter-spacing: 0.1em;
-      transition: opacity 0.2s;
-    }
-    .ipop-link:hover { opacity: 0.7; }
-
-    /* ── EDUCACIÓ ── */
-    .edu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-    .edu-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1.8rem;
-      transition: all 0.25s;
-    }
-    .edu-card:hover { border-color: var(--cyan); transform: translateY(-3px); }
-    .edu-year {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--cyan);
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.1em;
-    }
-    .edu-card h3 { font-size: 1rem; margin-bottom: 0.3rem; }
-    .edu-center {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--gray);
-      margin-bottom: 1rem;
-    }
-    .edu-card ul { padding-left: 1.2rem; }
-    .edu-card li {
-      font-size: 0.85rem;
-      color: var(--cyan2);
-      margin-bottom: 0.3rem;
-      line-height: 1.5;
+    .brand span{
+      color:var(--accent);
     }
 
-    /* ── CONTACTE ── */
-    #contact {
-      text-align: center;
-    }
-    .contact-email {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.4rem;
-      color: var(--cyan);
-      text-decoration: none;
-      border-bottom: 2px solid var(--cyan);
-      padding-bottom: 4px;
-      transition: opacity 0.2s;
-      display: inline-block;
-      margin-bottom: 2.5rem;
-    }
-    .contact-email:hover { opacity: 0.7; }
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .social-link {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--gray);
-      text-decoration: none;
-      letter-spacing: 0.1em;
-      padding: 0.6rem 1.2rem;
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      transition: all 0.2s;
-    }
-    .social-link:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
+    nav{
+      display:flex;
+      gap:1rem;
+      flex-wrap:wrap;
     }
 
-    /* ── FOOTER ── */
-    footer {
-      position: relative; z-index: 1;
-      text-align: center;
-      padding: 2rem;
-      border-top: 1px solid var(--border);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--gray);
-      letter-spacing: 0.1em;
+    nav a{
+      color:var(--text);
+      font-weight:600;
+      font-size:.95rem;
     }
 
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes expand {
-      0%, 100% { transform: scaleX(0.5); opacity: 0.5; }
-      50%       { transform: scaleX(1); opacity: 1; }
+    .hero{
+      padding:5rem 0 3rem;
     }
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:2rem;
+      align-items:center;
     }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      nav ul { gap: 1.2rem; }
-      #hero, section, #ipop { padding: 5rem 1.5rem 3rem; }
-      h1 { font-size: 3rem; }
+    .eyebrow{
+      display:inline-block;
+      padding:.35rem .7rem;
+      border:1px solid rgba(56,189,248,.25);
+      border-radius:999px;
+      color:var(--accent);
+      background:rgba(56,189,248,.08);
+      font-size:.9rem;
+      font-weight:700;
+      margin-bottom:1rem;
+    }
+
+    h1{
+      font-size:clamp(2.4rem,5vw,4.2rem);
+      line-height:1.05;
+      margin:.2rem 0 1rem;
+      color:var(--white);
+    }
+
+    .hero p{
+      color:var(--muted);
+      font-size:1.05rem;
+      max-width:720px;
+    }
+
+    .cta{
+      display:flex;
+      gap:1rem;
+      flex-wrap:wrap;
+      margin-top:1.6rem;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.9rem 1.2rem;
+      border-radius:12px;
+      font-weight:700;
+      transition:.2s ease;
+      border:1px solid transparent;
+    }
+
+    .btn-primary{
+      background:var(--accent);
+      color:#07111f;
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-2px);
+    }
+
+    .btn-secondary{
+      border-color:rgba(255,255,255,.1);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+    }
+
+    .hero-card{
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
+      border-radius:var(--radius);
+      padding:1.5rem;
+    }
+
+    .hero-list{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:grid;
+      gap:.8rem;
+    }
+
+    .hero-list li{
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      padding:.75rem 0;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .hero-list li:last-child{
+      border-bottom:none;
+    }
+
+    section{
+      padding:2rem 0 1rem;
+    }
+
+    .section-title{
+      font-size:2rem;
+      margin:0 0 .5rem;
+      color:var(--white);
+    }
+
+    .section-text{
+      color:var(--muted);
+      max-width:760px;
+      margin-bottom:1.5rem;
+    }
+
+    .grid{
+      display:grid;
+      gap:1.2rem;
+    }
+
+    .grid-3{
+      grid-template-columns:repeat(3,1fr);
+    }
+
+    .grid-2{
+      grid-template-columns:repeat(2,1fr);
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:1.3rem;
+      box-shadow:var(--shadow);
+    }
+
+    .card h3{
+      margin:.2rem 0 .6rem;
+      color:var(--white);
+    }
+
+    .card p{
+      color:var(--muted);
+      margin:0 0 1rem;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.55rem;
+      margin-top:.8rem;
+    }
+
+    .tag{
+      background:rgba(56,189,248,.08);
+      color:#c7f0ff;
+      border:1px solid rgba(56,189,248,.18);
+      padding:.35rem .65rem;
+      border-radius:999px;
+      font-size:.82rem;
+      font-weight:600;
+    }
+
+    .project-card{
+      display:flex;
+      flex-direction:column;
+      gap:.8rem;
+      height:100%;
+    }
+
+    .project-top{
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:flex-start;
+    }
+
+    .project-type{
+      font-size:.82rem;
+      font-weight:800;
+      color:var(--accent-2);
+      letter-spacing:.4px;
+      text-transform:uppercase;
+    }
+
+    .project-links{
+      display:flex;
+      gap:.75rem;
+      flex-wrap:wrap;
+      margin-top:.6rem;
+    }
+
+    .project-links a{
+      font-weight:700;
+      font-size:.95rem;
+    }
+
+    .timeline{
+      display:grid;
+      gap:1rem;
+    }
+
+    .timeline-item{
+      padding:1.2rem;
+      border-left:3px solid var(--accent);
+      background:var(--card);
+      border-radius:0 var(--radius) var(--radius) 0;
+      border:1px solid var(--line);
+    }
+
+    .timeline-item .date{
+      color:var(--accent);
+      font-weight:700;
+      font-size:.92rem;
+    }
+
+    .timeline-item h3{
+      margin:.35rem 0;
+    }
+
+    .contact-box{
+      text-align:center;
+      padding:2rem;
+      background:linear-gradient(180deg, rgba(56,189,248,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(56,189,248,.15);
+      border-radius:24px;
+    }
+
+    footer{
+      padding:2rem 0 3rem;
+      color:var(--muted);
+      text-align:center;
+      font-size:.95rem;
+    }
+
+    @media (max-width: 900px){
+      .hero-grid,
+      .grid-3,
+      .grid-2{
+        grid-template-columns:1fr;
+      }
+
+      .nav{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      nav{
+        gap:.8rem;
+      }
+
+      .hero{
+        padding:3.5rem 0 2rem;
+      }
     }
   </style>
 </head>
 <body>
+  <header>
+    <div class="container nav">
+      <div class="brand">miguel<span>IH</span>.github.io</div>
+      <nav>
+        <a href="#sobre">Sobre mi</a>
+        <a href="#skills">Skills</a>
+        <a href="#experiencia">Experiència</a>
+        <a href="#projectes">Projectes</a>
+        <a href="#educacio">Educació</a>
+        <a href="#contacte">Contacte</a>
+      </nav>
+    </div>
+  </header>
 
-  <div id="cursor"></div>
-  <div id="cursor-ring"></div>
+  <main>
+    <section class="hero container">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Portfolio personal</div>
+          <h1>Miguel Ibañez Hernando</h1>
+          <p>
+            Estudiant d'ASIX amb base en SMX i interès clar en sistemes, xarxes, Docker, serveis Linux
+            i desplegament d'aplicacions. Aquest espai recull el meu perfil i alguns dels projectes
+            que he desenvolupat durant la meva formació.
+          </p>
+          <div class="cta">
+            <a class="btn btn-primary" href="#projectes">Veure projectes</a>
+            <a class="btn btn-secondary" href="https://github.com/miguelIH" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="btn btn-secondary" href="mailto:miiguel.ih.13@gmail.com">Email</a>
+          </div>
+        </div>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">miguel<span>IH</span>.dev</div>
-    <ul>
-      <li><a href="#sobre">sobre</a></li>
-      <li><a href="#skills">skills</a></li>
-      <li><a href="#experiencia">experiència</a></li>
-      <li><a href="#projectes">projectes</a></li>
-      <li><a href="#educacio">educació</a></li>
-      <li><a href="#contact">contacte</a></li>
-    </ul>
-  </nav>
+        <aside class="hero-card">
+          <ul class="hero-list">
+            <li><strong>Ubicació</strong><span>Blanes, Girona</span></li>
+            <li><strong>Formació</strong><span>SMX + ASIX</span></li>
+            <li><strong>Interès</strong><span>Sistemes, xarxes i cloud</span></li>
+            <li><strong>Stack</strong><span>Linux, Docker, PHP, Python, PostgreSQL</span></li>
+          </ul>
+        </aside>
+      </div>
+    </section>
 
-  <!-- HERO -->
-  <section id="hero" style="padding-top:0; max-width:100%;">
-    <div class="hero-content">
-      <p class="hero-tag">Tècnic en Sistemes i Xarxes · Blanes, Girona</p>
-      <h1>Miguel<br><span>Ibañez</span></h1>
-      <p class="hero-subtitle">ASIX · SMX · Linux · Docker · CCNA · Python</p>
-      <p class="hero-desc">
-        Tècnic de 20 anys format en sistemes, xarxes i seguretat informàtica.
-        Apassionat per la infraestructura IT, la virtualització i el desplegament de serveis.
-        Buscant la meva primera oportunitat professional.
+    <section id="sobre" class="container">
+      <h2 class="section-title">Sobre mi</h2>
+      <p class="section-text">
+        He estudiat SMX i actualment estic cursant ASIX a l'Institut Sa Palomera de Blanes.
+        Durant aquest temps he treballat amb Linux, Windows Server, xarxes TCP/IP, serveis
+        com Apache, DNS i DHCP, bases de dades PostgreSQL, contenidors Docker i desenvolupament
+        web amb PHP, HTML, CSS i JavaScript.
       </p>
-      <div class="hero-btns">
-        <a href="#contact" class="btn btn-primary">Contacta'm</a>
-        <a href="https://github.com/miguelIH/CV" target="_blank" class="btn btn-outline">GitHub →</a>
-        <a href="https://www.linkedin.com/in/miguel-ih/" target="_blank" class="btn btn-outline">LinkedIn →</a>
-      </div>
-    </div>
-    <div class="scroll-line">scroll</div>
-  </section>
-
-  <!-- SOBRE -->
-  <section id="sobre">
-    <div class="reveal">
-      <p class="section-tag">sobre mi</p>
-      <h2>Qui soc</h2>
-      <p style="font-size:1.05rem; color:var(--cyan2); line-height:1.8; max-width:700px;">
-        Tècnic en Sistemes Microinformàtics i Xarxes (SMX) i cursant el Grau Superior 
-        d'Administració de Sistemes Informàtics en Xarxa (ASIX) a l'Institut Sa Palomera de Blanes.
-        <br><br>
-        Tinc experiència pràctica en administració de sistemes Linux i Windows Server, 
-        configuració de xarxes TCP/IP, VLANs, DNS i DHCP, virtualització amb Docker i VMware, 
-        i programació en Python i PHP.
-        <br><br>
-        He realitzat pràctiques en entorns reals: suport tècnic a l'Institut Manyanet de Blanes 
-        i pràctiques internacionals a Amarante, Portugal.
+      <p class="section-text">
+        També he realitzat pràctiques en entorns reals, tant a Blanes com a Portugal, cosa que
+        m'ha ajudat a millorar la meva adaptació, autonomia i capacitat per resoldre incidències.
       </p>
-    </div>
-  </section>
+    </section>
 
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="reveal">
-      <p class="section-tag">competències tècniques</p>
-      <h2>Skills</h2>
-    </div>
-    <div class="skills-grid">
-      <div class="skill-card reveal">
-        <div class="skill-icon">🌐</div>
-        <h3>Xarxes</h3>
-        <div class="skill-tags">
-          <span class="tag">TCP/IP</span>
-          <span class="tag">VLANs</span>
-          <span class="tag">DNS</span>
-          <span class="tag">DHCP</span>
-          <span class="tag">CCNA</span>
-          <span class="tag">Routing</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon">🖥️</div>
-        <h3>Sistemes Operatius</h3>
-        <div class="skill-tags">
-          <span class="tag">Linux</span>
-          <span class="tag">Windows Server</span>
-          <span class="tag">Ubuntu</span>
-          <span class="tag">Debian</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon">📦</div>
-        <h3>Virtualització</h3>
-        <div class="skill-tags">
-          <span class="tag">Docker</span>
-          <span class="tag">VMware</span>
-          <span class="tag">VirtualBox</span>
-          <span class="tag">Proxmox</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon">💻</div>
-        <h3>Programació</h3>
-        <div class="skill-tags">
-          <span class="tag">Python</span>
-          <span class="tag">PHP</span>
-          <span class="tag">HTML/CSS</span>
-          <span class="tag">PostgreSQL</span>
-          <span class="tag">Apache</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon">🔒</div>
-        <h3>Seguretat</h3>
-        <div class="skill-tags">
-          <span class="tag">Firewalls</span>
-          <span class="tag">VPN</span>
-          <span class="tag">Hardening</span>
-          <span class="tag">ENS</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon">🗣️</div>
-        <h3>Idiomes</h3>
-        <div class="skill-tags">
-          <span class="tag">Català natiu</span>
-          <span class="tag">Castellà natiu</span>
-          <span class="tag">Anglès B2</span>
-          <span class="tag">Portuguès bàsic</span>
-        </div>
-      </div>
-    </div>
-  </section>
+    <section id="skills" class="container">
+      <h2 class="section-title">Skills tècniques</h2>
+      <p class="section-text">
+        Aquestes són les àrees amb les quals he treballat de forma pràctica durant el cicle.
+      </p>
 
-  <!-- EXPERIÈNCIA -->
-  <section id="experiencia">
-    <div class="reveal">
-      <p class="section-tag">experiència laboral</p>
-      <h2>Trajectòria</h2>
-    </div>
-    <div class="timeline reveal">
-      <div class="timeline-item">
-        <div class="timeline-date">Mar 2025 — Mai 2025</div>
-        <h3>Tècnic IT en pràctiques</h3>
-        <div class="timeline-company">Empresa · Amarante, Portugal</div>
-        <p class="timeline-desc">Pràctiques internacionals en entorn IT. Administració de sistemes i xarxes en anglès. Adaptació a entorn internacional.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">Jun 2025 — Set 2025</div>
-        <h3>Cambrer de temporada</h3>
-        <div class="timeline-company">Hotel Spa Pimar · Blanes</div>
-        <p class="timeline-desc">Atenció al client en entorn hoteler. Treball en equip sota pressió.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">Jun 2024 — Set 2024</div>
-        <h3>Empleat</h3>
-        <div class="timeline-company">Telepizza · Blanes</div>
-        <p class="timeline-desc">Gestió del temps i atenció al client en entorn d'alta demanda.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">Set 2022 — Mar 2023</div>
-        <h3>Estudiant en pràctiques SMX</h3>
-        <div class="timeline-company">Institut Manyanet · Blanes</div>
-        <p class="timeline-desc">Suport tècnic a usuaris, manteniment d'equips i resolució d'incidències en xarxa local.</p>
-      </div>
-    </div>
-  </section>
+      <div class="grid grid-3">
+        <article class="card">
+          <h3>Xarxes</h3>
+          <p>Configuració i manteniment de xarxes locals, adreçament IP, VLANs i serveis bàsics.</p>
+          <div class="tags">
+            <span class="tag">TCP/IP</span>
+            <span class="tag">VLANs</span>
+            <span class="tag">DNS</span>
+            <span class="tag">DHCP</span>
+            <span class="tag">CCNA</span>
+          </div>
+        </article>
 
-  <!-- PROJECTES -->
-  <section id="projectes" style="max-width:100%; background:var(--navy2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding: 6rem 4rem;">
-    <div style="max-width:1100px; margin:0 auto;">
-      <div class="reveal">
-        <p class="section-tag">repositori github</p>
-        <h2>Projectes</h2>
-        <p style="color:var(--cyan2); font-size:0.95rem; margin-bottom:3rem; max-width:650px; line-height:1.7;">
-          Projectes desenvolupats durant la formació en SMX i ASIX. Codi, documentació i configuracions reals de sistemes, xarxes i aplicacions web.
+        <article class="card">
+          <h3>Sistemes</h3>
+          <p>Administració bàsica de sistemes Linux i Windows Server en entorns acadèmics i de pràctiques.</p>
+          <div class="tags">
+            <span class="tag">Linux</span>
+            <span class="tag">Ubuntu</span>
+            <span class="tag">Debian</span>
+            <span class="tag">Windows Server</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Virtualització i contenidors</h3>
+          <p>Desplegament de serveis i proves amb entorns virtuals i contenidors.</p>
+          <div class="tags">
+            <span class="tag">Docker</span>
+            <span class="tag">Docker Compose</span>
+            <span class="tag">VirtualBox</span>
+            <span class="tag">VMware</span>
+            <span class="tag">Proxmox</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Desenvolupament</h3>
+          <p>Aplicacions web i scripts per a projectes del cicle formatiu.</p>
+          <div class="tags">
+            <span class="tag">PHP</span>
+            <span class="tag">Python</span>
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Bases de dades</h3>
+          <p>Disseny, connexió i gestió de dades en diferents pràctiques i projectes.</p>
+          <div class="tags">
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Model relacional</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Altres</h3>
+          <p>Configuració de serveis, seguretat bàsica i documentació tècnica de projectes.</p>
+          <div class="tags">
+            <span class="tag">Apache</span>
+            <span class="tag">SSL/TLS</span>
+            <span class="tag">Firewalls</span>
+            <span class="tag">Documentació</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="experiencia" class="container">
+      <h2 class="section-title">Experiència</h2>
+      <p class="section-text">Experiència acadèmica i professional més rellevant.</p>
+
+      <div class="timeline">
+        <article class="timeline-item">
+          <div class="date">Març 2025 — Maig 2025</div>
+          <h3>Tècnic IT en pràctiques · Amarante, Portugal</h3>
+          <p>Pràctiques internacionals en entorn IT, treballant amb sistemes i xarxes en anglès i adaptant-me a un entorn professional nou.</p>
+        </article>
+
+        <article class="timeline-item">
+          <div class="date">Juny 2025 — Setembre 2025</div>
+          <h3>Cambrer de temporada · Hotel Spa Pimar</h3>
+          <p>Experiència d'atenció al client i treball sota pressió en temporada alta.</p>
+        </article>
+
+        <article class="timeline-item">
+          <div class="date">Juny 2024 — Setembre 2024</div>
+          <h3>Empleat · Telepizza</h3>
+          <p>Treball en equip, organització i gestió del temps en entorn d'alta demanda.</p>
+        </article>
+
+        <article class="timeline-item">
+          <div class="date">Setembre 2022 — Març 2023</div>
+          <h3>Pràctiques SMX · Institut Manyanet</h3>
+          <p>Suport tècnic a usuaris, manteniment d'equips i resolució d'incidències bàsiques.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="projectes" class="container">
+      <h2 class="section-title">Projectes</h2>
+      <p class="section-text">
+        Alguns projectes que tinc pujats al repositori i que reflecteixen el que he anat treballant
+        a classe: sistemes, aplicacions web, Docker i serveis Linux.
+      </p>
+
+      <div class="grid grid-2">
+        <article class="card project-card">
+          <div class="project-top">
+            <div>
+              <div class="project-type">Python · PostgreSQL</div>
+              <h3>Sistema de Gestió Hospitalari</h3>
+            </div>
+          </div>
+          <p>
+            Projecte acadèmic desenvolupat per entregues, orientat a la gestió d'un hospital.
+            Inclou connectivitat, login, model ER, model relacional i esquema de seguretat.
+          </p>
+          <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Cryptography</span>
+            <span class="tag">Seguretat</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/miguelIH/miguelIH.github.io/tree/main/Serveis%2024-25" target="_blank" rel="noopener noreferrer">Veure carpeta</a>
+          </div>
+        </article>
+
+        <article class="card project-card">
+          <div class="project-top">
+            <div>
+              <div class="project-type">PHP · PostgreSQL</div>
+              <h3>Gestor d'Esdeveniments</h3>
+            </div>
+          </div>
+          <p>
+            Aplicació web amb registre i login d'usuaris, gestió d'esdeveniments, reviews i
+            base de dades PostgreSQL. Un projecte complet de desenvolupament web.
+          </p>
+          <div class="tags">
+            <span class="tag">PHP</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">HTML/CSS</span>
+            <span class="tag">JavaScript</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/miguelIH/miguelIH.github.io/tree/main/Webs%2024-25" target="_blank" rel="noopener noreferrer">Veure carpeta</a>
+          </div>
+        </article>
+
+        <article class="card project-card">
+          <div class="project-top">
+            <div>
+              <div class="project-type">Docker · Apache</div>
+              <h3>Infraestructura Docker + Apache</h3>
+            </div>
+          </div>
+          <p>
+            Muntatge d'una infraestructura amb Docker Compose que integra serveis com Apache,
+            MySQL, Redis, virtual hosts i configuració SSL/TLS.
+          </p>
+          <div class="tags">
+            <span class="tag">Docker</span>
+            <span class="tag">Apache</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">Redis</span>
+            <span class="tag">SSL/TLS</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/miguelIH/miguelIH.github.io/tree/main/Serveis%2025-26" target="_blank" rel="noopener noreferrer">Veure carpeta</a>
+          </div>
+        </article>
+
+        <article class="card project-card">
+          <div class="project-top">
+            <div>
+              <div class="project-type">Linux · Streaming</div>
+              <h3>Servidor de Ràdio Icecast</h3>
+            </div>
+          </div>
+          <p>
+            Configuració d'un servidor Icecast2 en Linux per a streaming d'àudio, amb documentació
+            del procés d'instal·lació, configuració i proves de funcionament.
+          </p>
+          <div class="tags">
+            <span class="tag">Icecast2</span>
+            <span class="tag">Linux</span>
+            <span class="tag">Streaming</span>
+            <span class="tag">Serveis</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/miguelIH/miguelIH.github.io/tree/main/Serveis%2025-26" target="_blank" rel="noopener noreferrer">Veure carpeta</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="educacio" class="container">
+      <h2 class="section-title">Educació</h2>
+      <div class="grid grid-2">
+        <article class="card">
+          <h3>FPGS ASIX</h3>
+          <p>Institut Sa Palomera · Blanes</p>
+          <div class="tags">
+            <span class="tag">Linux</span>
+            <span class="tag">Windows Server</span>
+            <span class="tag">Seguretat</span>
+            <span class="tag">Xarxes</span>
+            <span class="tag">Serveis</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>FPGM SMX</h3>
+          <p>Institut Sa Palomera · Blanes</p>
+          <div class="tags">
+            <span class="tag">Manteniment</span>
+            <span class="tag">Xarxes locals</span>
+            <span class="tag">Suport tècnic</span>
+            <span class="tag">CCNA</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contacte" class="container">
+      <div class="contact-box">
+        <h2 class="section-title">Contacte</h2>
+        <p class="section-text" style="margin:0 auto 1rem;">
+          Si vols contactar amb mi per pràctiques, feina o col·laboracions, aquí tens les meves dades.
         </p>
+        <p><strong>Email:</strong> <a href="mailto:miiguel.ih.13@gmail.com">miiguel.ih.13@gmail.com</a></p>
+        <p><strong>GitHub:</strong> <a href="https://github.com/miguelIH" target="_blank" rel="noopener noreferrer">github.com/miguelIH</a></p>
+        <p><strong>Telèfon:</strong> +34 690 84 66 37</p>
       </div>
+    </section>
+  </main>
 
-      <!-- PROJECT CARDS GRID -->
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem;">
-
-        <!-- PROJECTE 1: Sistema Hospitalari -->
-        <div class="ipop-card reveal" style="display:flex; flex-direction:column; justify-content:space-between;">
-          <div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-              <h3 style="margin:0;">// Sistema de Gestió Hospitalari</h3>
-              <span class="tag">Python</span>
-            </div>
-            <p style="margin-bottom:1rem;">Aplicació CLI per gestionar un hospital. Inclou connectivitat de xarxa, sistema de login amb encriptació, disseny ER, model relacional i esquema de seguretat.</p>
-            <div style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.5rem;">
-              <span class="tag">Python</span>
-              <span class="tag">PostgreSQL</span>
-              <span class="tag">Cryptography</span>
-              <span class="tag">CSV</span>
-              <span class="tag">TCP/IP</span>
-            </div>
-            <div style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--gray); margin-bottom:1rem;">
-              📋 10 entregas · Planificació → Manual d'usuari
-            </div>
-          </div>
-          <a href="https://github.com/miguelIH/miguelIH.github.io/tree/main/Serveis%2024-25" target="_blank" class="ipop-link">→ Veure a GitHub</a>
-        </div>
-
-        <!-- PROJECTE 2: Gestor d'Esdeveniments -->
-        <div class="ipop-card reveal" style="display:flex; flex-direction:column; justify-content:space-between;">
-          <div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-              <h3 style="margin:0;">// Gestor d'Esdeveniments</h3>
-              <span class="tag">PHP</span>
-            </div>
-            <p style="margin-bottom:1rem;">Aplicació web completa per gestionar un calendari d'esdeveniments. Inclou registre d'usuaris, login, CRUD d'events, reviews i base de dades PostgreSQL.</p>
-            <div style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.5rem;">
-              <span class="tag">PHP</span>
-              <span class="tag">PostgreSQL</span>
-              <span class="tag">HTML/CSS</span>
-              <span class="tag">JavaScript</span>
-              <span class="tag">Apache</span>
-            </div>
-            <div style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--gray); margin-bottom:1rem;">
-              🗓️ Login · Calendari · CRUD · Reviews
-            </div>
-          </div>
-          <a href="https://github.com/miguelIH/miguelIH.github.io/tree/main/Webs%2024-25" target="_blank" class="ipop-link">→ Veure a GitHub</a>
-        </div>
-
-        <!-- PROJECTE 3: Docker + Apache -->
-        <div class="ipop-card reveal" style="display:flex; flex-direction:column; justify-content:space-between;">
-          <div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-              <h3 style="margin:0;">// Infraestructura Docker + Apache</h3>
-              <span class="tag">Docker</span>
-            </div>
-            <p style="margin-bottom:1rem;">Desplegament d'una infraestructura completa amb Docker Compose. Conté Apache (frontend + API), MySQL, Redis, VirtualHosts, SSL/TLS i logs estructurats en JSON.</p>
-            <div style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.5rem;">
-              <span class="tag">Docker</span>
-              <span class="tag">Apache</span>
-              <span class="tag">MySQL</span>
-              <span class="tag">Redis</span>
-              <span class="tag">SSL/TLS</span>
-              <span class="tag">PHP</span>
-            </div>
-            <div style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--gray); margin-bottom:1rem;">
-              🐳 Frontend · API · BD · Cache · HTTPS
-            </div>
-          </div>
-          <a href="https://github.com/miguelIH/miguelIH.github.io/tree/main/Serveis%2025-26" target="_blank" class="ipop-link">→ Veure a GitHub</a>
-        </div>
-
-        <!-- PROJECTE 4: Icecast Radio -->
-        <div class="ipop-card reveal" style="display:flex; flex-direction:column; justify-content:space-between;">
-          <div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-              <h3 style="margin:0;">// Servidor de Ràdio Icecast</h3>
-              <span class="tag">Linux</span>
-            </div>
-            <p style="margin-bottom:1rem;">Configuració i desplegament d'un servidor de streaming d'àudio amb Icecast2 en Linux. Documentació completa del procés d'instal·lació, configuració i proves.</p>
-            <div style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.5rem;">
-              <span class="tag">Icecast2</span>
-              <span class="tag">Linux</span>
-              <span class="tag">Streaming</span>
-              <span class="tag">Audio</span>
-              <span class="tag">Serveis Xarxa</span>
-            </div>
-            <div style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--gray); margin-bottom:1rem;">
-              📻 Servidor streaming · Config · Documentació
-            </div>
-          </div>
-          <a href="https://github.com/miguelIH/miguelIH.github.io/tree/main/Serveis%2025-26" target="_blank" class="ipop-link">→ Veure a GitHub</a>
-        </div>
-
-      </div>
-
-      <div style="margin-top:2.5rem;" class="reveal">
-        <a href="https://github.com/miguelIH" target="_blank" class="btn btn-outline" style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; letter-spacing:0.1em; padding:0.75rem 1.8rem; border-radius:2px; text-decoration:none; border:1px solid var(--cyan); color:var(--cyan); display:inline-block; transition:all 0.2s;">
-          → Veure tots els repositoris a GitHub
-        </a>
-      </div>
-    </div>
-  </section>
-
-
-
-  <!-- EDUCACIÓ -->
-  <section id="educacio">
-    <div class="reveal">
-      <p class="section-tag">formació acadèmica</p>
-      <h2>Educació</h2>
-    </div>
-    <div class="edu-grid">
-      <div class="edu-card reveal">
-        <div class="edu-year">2023 — 2026 · En curs</div>
-        <h3>FPGS ASIX</h3>
-        <div class="edu-center">Institut Sa Palomera · Blanes</div>
-        <ul>
-          <li>Administració de sistemes Linux i Windows Server</li>
-          <li>Seguretat informàtica i ciberseguretat</li>
-          <li>Virtualització i serveis en xarxa</li>
-          <li>Desplegament d'aplicacions web</li>
-        </ul>
-      </div>
-      <div class="edu-card reveal">
-        <div class="edu-year">2022 — 2024</div>
-        <h3>FPGM SMX</h3>
-        <div class="edu-center">Institut Sa Palomera · Blanes</div>
-        <ul>
-          <li>Instal·lació i manteniment d'equips</li>
-          <li>Configuració de xarxes locals (CCNA)</li>
-          <li>Suport tècnic i resolució d'incidències</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACTE -->
-  <section id="contact">
-    <div class="reveal">
-      <p class="section-tag">contacte</p>
-      <h2>Parlem</h2>
-      <a href="/cdn-cgi/l/email-protection#4b2622222c3e2e27652223657a780b2c262a222765282426" class="contact-email">
-        <span class="__cf_email__" data-cfemail="92fffbfbf5e7f7febcfbfabca3a1d2f5fff3fbfebcf1fdff">[email&#160;protected]</span>
-      </a>
-      <div class="social-links">
-        <a href="https://www.linkedin.com/in/miguel-ih/" target="_blank" class="social-link">LinkedIn</a>
-        <a href="https://github.com/miguelIH" target="_blank" class="social-link">GitHub</a>
-        <a href="tel:+34690846637" class="social-link">+34 690 84 66 37</a>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <p>© 2026 · Miguel Ibañez Hernando · Blanes, Girona</p>
+  <footer class="container">
+    © 2026 · Miguel Ibañez Hernando · Blanes, Girona
   </footer>
-
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // Custom cursor
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursor-ring');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.left = mx - 6 + 'px';
-      cursor.style.top  = my - 6 + 'px';
-    });
-    (function animRing() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) *.12;
-      ring.style.left = rx - 18 + 'px';
-      ring.style.top  = ry - 18 + 'px';
-      requestAnimationFrame(animRing);
-    })();
-
-    // Scroll reveal
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach((e, i) => {
-       
+</body>
+</html>
